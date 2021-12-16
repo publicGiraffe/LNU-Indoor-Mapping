@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -11,7 +11,13 @@ using Newtonsoft.Json;
 
 public class ReadMap : MonoBehaviour, PlacenoteListener {
 
-    private const string MAP_NAME = "GenericMap";
+    public string MAP_NAME = "LNU 701";
+    // public Dropdown dropdown;
+    // public List<string> AvailableOptions = new List<string>();
+    
+    [SerializeField]
+    public InputField mainInput;
+    
 
     private UnityARSessionNativeInterface mSession;
     private bool mARInit = false;
@@ -21,6 +27,18 @@ public class ReadMap : MonoBehaviour, PlacenoteListener {
     string currMapID = String.Empty;
 
     private LibPlacenote.MapInfo mSelectedMapInfo;
+    
+    // void PopulateList(){
+    // LibPlacenote.Instance.ListMaps((mapList) =>
+        // {
+            // Render the map list!
+            // foreach (LibPlacenote.MapInfo mapInfoItem in mapList)
+                // {
+                    // AvailableOptions.Add(mapInfoItem.metadata.name);
+                // }
+             // });
+        // dropdown.AddOptions(names);
+    // }
     private string mSelectedMapId {
         get {
             return mSelectedMapInfo != null ? mSelectedMapInfo.placeId : null;
@@ -30,11 +48,11 @@ public class ReadMap : MonoBehaviour, PlacenoteListener {
     // Use this for initialization
     void Start() {
         Input.location.Start();
-
         mSession = UnityARSessionNativeInterface.GetARSessionNativeInterface();
         StartARKit();
         FeaturesVisualizer.EnablePointcloud();
         LibPlacenote.Instance.RegisterListener(this);
+        //PopulateList();
     }
 
     void OnDisable() {
@@ -42,6 +60,7 @@ public class ReadMap : MonoBehaviour, PlacenoteListener {
 
     // Update is called once per frame
     void Update() {
+        MAP_NAME = mainInput.text;
         if (!mARInit && LibPlacenote.Instance.Initialized())
         {
             Debug.Log("Ready to Start!");
