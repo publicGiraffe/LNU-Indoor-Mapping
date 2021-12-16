@@ -14,7 +14,7 @@ public class CreateMap : MonoBehaviour, PlacenoteListener {
 
     public Text debugText;
 
-    private const string MAP_NAME = "GenericMap";
+    public string MAP_NAME = "LNU Map";
 
     private CustomShapeManager shapeManager;
 
@@ -44,6 +44,10 @@ public class CreateMap : MonoBehaviour, PlacenoteListener {
     }
 
     void OnDisable() {
+    }
+    
+    public void TextChanged(string newText){
+        MAP_NAME = newText;
     }
 
     // Update is called once per frame
@@ -173,7 +177,7 @@ public class CreateMap : MonoBehaviour, PlacenoteListener {
                     LibPlacenote.Instance.StopSession();
 
                     LibPlacenote.MapMetadataSettable metadata = new LibPlacenote.MapMetadataSettable();
-                    metadata.name = "LNU at Home" + mapId;
+                    metadata.name = MAP_NAME;
                     Debug.Log("Saved Map Name: " + metadata.name);
 
                     JObject userdata = new JObject();
